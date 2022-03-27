@@ -12,7 +12,7 @@ const bree = new Bree({
    */
   defaultExtension: process.env.TS_NODE ? "ts" : "js",
   jobs: [
-    { name: "alive", interval: "1m" },
+    { name: "alive", interval: "every 2 days" },
     { name: "natur-boost", interval: "at 12:00 am" },
   ],
 });
