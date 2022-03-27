@@ -8,3 +8,4 @@ allem was dazu gehört.
 ### Boost von Hashtags
 
 - #wandern
+- #natur
