@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "nodemon ./src/index.ts",
     "build": "tsc",
-        "start": "ts-node ./src/index.ts"
+    "start": "ts-node ./src/index.ts"
   },
   "author": "Andreas Sander (mail@andi1984.de)",
   "license": "MIT",
