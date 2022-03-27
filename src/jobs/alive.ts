@@ -1,12 +1,9 @@
-import cron = require("node-cron");
+import { parentPort } from "node:worker_threads";
+import process from "node:process";
 
-const login = require("../helper/login");
+console.log("Alive");
 
-const schedule = () => {
-  console.log("schedule alive");
-  cron.schedule("*/5 * * * *", () => {
-    console.log("still alive");
-  });
-};
-
-module.exports = schedule;
+// signal to parent that the job is done
+if (parentPort) parentPort.postMessage("done");
+// eslint-disable-next-line unicorn/no-process-exit
+else process.exit(0);

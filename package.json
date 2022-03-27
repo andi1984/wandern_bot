@@ -7,11 +7,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "nodemon ./src/index.ts",
     "build": "tsc",
-    "start": "node ./scripts/create-env.js && ts-node ./src/index.ts"
+    "dev": "TS_NODE=true NODE_OPTIONS=\"-r ts-node/register\" node src/index.ts",
+    "start": "node ./scripts/create-env.js && node ./dist/index.js"
   },
   "author": "Andreas Sander (mail@andi1984.de)",
   "license": "MIT",
   "dependencies": {
+    "bree": "^8.0.2",
     "dotenv": "^16.0.0",
     "masto": "^4.2.7",
     "mastodon-api": "^1.3.0",
