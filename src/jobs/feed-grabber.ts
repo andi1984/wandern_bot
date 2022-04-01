@@ -1,4 +1,4 @@
-const feeds = require("../data/rssfeeds.json");
+const feeds:Record<string, string> = require("../data/rssfeeds.json");
 
 import getFeed from "../helper/getFeed";
 import { createClient } from "@supabase/supabase-js";
@@ -8,9 +8,14 @@ const { parentPort } = require("worker_threads");
 
 // Create a single supabase client for interacting with your database
 const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
+  process.env.SUPABASE_URL as string,
+  process.env.SUPABASE_KEY as string
 );
+
+type DB_ITEM = {
+  hash: string;
+  json: string;
+}
 
 // Iterate over all feeds
 (async () => {
@@ -21,7 +26,7 @@ const supabase = createClient(
     const tableId = sha256(feedURL);
 
     // cf. https://advancedweb.hu/how-to-use-async-functions-with-array-filter-in-javascript/
-    const asyncFilter = async (arr, predicate) => {
+    const asyncFilter = async (arr: any[], predicate: (value: DB_ITEM, index: number, array:DB_ITEM[]) => Promise<boolean>) => {
       const results = await Promise.all(arr.map(predicate));
 
       return arr.filter((_v, index) => results[index]);
@@ -34,14 +39,14 @@ const supabase = createClient(
           data: JSON.stringify(item),
         };
       }),
-      async (item) => {
+      async(item:DB_ITEM) => {
         // Check that hash isn't already in the table
         let { data: feeds, error } = await supabase
           .from("feeds")
           .select("hash")
           .in("hash", [item.hash]);
 
-        return feeds.length == 0 && error == null;
+        return (!feeds || feeds.length == 0) && error == null;
       }
     );
 
