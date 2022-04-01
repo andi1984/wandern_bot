@@ -1,11 +1,10 @@
-import cron = require("node-cron");
-const { parentPort } = require("worker_threads");
-
-const login = require("../helper/login");
+import type { MastoClient } from "masto";
+import login from "../helper/login";
 
 (async () => {
+  const { parentPort } = require("worker_threads");
   console.log("Starting nature worker");
-  const mastoInstance = await login();
+  const mastoInstance:MastoClient = await login();
   const timelines = mastoInstance.timelines;
   const results = timelines.getTagIterable("natur");
   // const results = mastoInstance.search({ q: "#natur" });

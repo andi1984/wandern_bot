@@ -1,8 +1,9 @@
 require("dotenv").config();
 const path = require("path");
 
-import Bree = require("bree");
+const Bree = require("bree");
 
+console.log("starting bree");
 const bree = new Bree({
   root: path.join(__dirname, "jobs"),
   /**
@@ -12,8 +13,9 @@ const bree = new Bree({
    */
   defaultExtension: process.env.TS_NODE ? "ts" : "js",
   jobs: [
+    { name: "feed-grabber", interval: "every 2 days" },
+    { name: "natur-boost", interval: "every 3 days" },
     { name: "alive", interval: "every 2 days" },
-    { name: "natur-boost", interval: "at 12:00 am" },
   ],
 });
 
