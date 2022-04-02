@@ -1,6 +1,7 @@
 {
         "extends": "@tsconfig/node14/tsconfig.json",
         "compilerOptions": {
+                "resolveJsonModule": true,
                 "target": "es2017",
                 "types": ["node"],
                 "moduleResolution": "node",

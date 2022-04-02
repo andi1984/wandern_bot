@@ -1,4 +1,4 @@
-const feeds:Record<string, string> = require("../data/rssfeeds.json");
+import feeds from "../data/rssfeeds.json";
 
 import getFeed from "../helper/getFeed";
 import createClient from "../helper/db";
@@ -12,49 +12,59 @@ const supabase = createClient();
 
 type DB_ITEM = {
   hash: string;
-  json: string;
+  data: string;
 }
+
+// cf. https://advancedweb.hu/how-to-use-async-functions-with-array-filter-in-javascript/
+const asyncFilter = async <K>(arr: K[], predicate: (value: K, index: number, array:K[]) => Promise<boolean>) => {
+  const results = await Promise.all(arr.map(predicate));
+
+  return arr.filter((_v, index) => results[index]);
+};
+
+const asyncForEach = async <K>(arr: K[], predicate: (value: K, index: number, array:K[]) => Promise<boolean>) => await Promise.all(arr.map(predicate));
 
 // Iterate over all feeds
 (async () => {
-  Object.values(feeds).forEach(async (feedURL: string) => {
-    const rssData: { items: any[] } = await getFeed(feedURL);
+  await asyncForEach(
+    Object.values(feeds),
+    async (feedURL: string) => {
+      const rssData: { items: any[] } = await getFeed(feedURL);
 
-    // 1. Hash feedURL to get a unique id for the table
-    const tableId = sha256(feedURL);
+      // 1. Hash feedURL to get a unique id for the table
+      const tableId = sha256(feedURL);
 
-    // cf. https://advancedweb.hu/how-to-use-async-functions-with-array-filter-in-javascript/
-    const asyncFilter = async (arr: any[], predicate: (value: DB_ITEM, index: number, array:DB_ITEM[]) => Promise<boolean>) => {
-      const results = await Promise.all(arr.map(predicate));
+      const newData = await asyncFilter(
+        rssData.items.map((item: any) => {
+          return {
+            hash: `${tableId}-${sha256(item.title)}`,
+            data: JSON.stringify(item),
+          };
+        }),
+        async (item: DB_ITEM) => {
+          // Check that hash isn't already in the table
+          let { data: feeds, error } = await supabase
+            .from("feeds")
+            .select("hash")
+            .in("hash", [item.hash]);
 
-      return arr.filter((_v, index) => results[index]);
-    };
+          return (!feeds || feeds.length == 0) && error == null;
+        }
+      );
 
-    const newData = await asyncFilter(
-      rssData.items.map((item: any) => {
-        return {
-          hash: `${tableId}-${sha256(item.title)}`,
-          data: JSON.stringify(item),
-        };
-      }),
-      async(item:DB_ITEM) => {
-        // Check that hash isn't already in the table
-        let { data: feeds, error } = await supabase
-          .from("feeds")
-          .select("hash")
-          .in("hash", [item.hash]);
+      if (newData.length > 0) {
+        console.log(`Inserting ${newData.length} new items`);
+        const { data, error } = await supabase.from("feeds").insert(newData);
+        console.log({ data, error });
 
-        return (!feeds || feeds.length == 0) && error == null;
+        return true;
       }
-    );
 
-    console.log(`Inserting ${newData.length} new items`);
-    if (newData.length > 0) {
-      const { data, error } = await supabase.from("feeds").insert(newData);
-      console.log({ data, error });
-    }
-
-    if (parentPort) parentPort.postMessage("done");
-    else process.exit(0);
-  });
+      return false;
+    });
+  
+  if (parentPort) parentPort.postMessage("done");
+  else process.exit(0);
 })();
+
+  
