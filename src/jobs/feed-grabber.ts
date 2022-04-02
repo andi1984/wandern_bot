@@ -1,16 +1,14 @@
 const feeds:Record<string, string> = require("../data/rssfeeds.json");
 
 import getFeed from "../helper/getFeed";
-import { createClient } from "@supabase/supabase-js";
+import createClient from "../helper/db";
+
 import sha256 from "crypto-js/sha256";
 
 const { parentPort } = require("worker_threads");
 
 // Create a single supabase client for interacting with your database
-const supabase = createClient(
-  process.env.SUPABASE_URL as string,
-  process.env.SUPABASE_KEY as string
-);
+const supabase = createClient();
 
 type DB_ITEM = {
   hash: string;
