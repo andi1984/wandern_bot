@@ -1,5 +1,6 @@
 import type { MastoClient } from "masto";
 import login from "../helper/login";
+import { asyncForEach } from "../helper/async";
 
 (async () => {
   const { parentPort } = require("worker_threads");
@@ -10,11 +11,6 @@ import login from "../helper/login";
   // const results = mastoInstance.search({ q: "#natur" });
   //Async iterable
   const result: { value: { id: string }[] } = await results.next();
-
-  const asyncForEach = async <K>(
-    arr: K[],
-    predicate: (value: K, index: number, array: K[]) => Promise<boolean>
-  ) => await Promise.all(arr.map(predicate));
 
   // We got our first X entries in result.value
   // Reblog/Boost all natur posts
