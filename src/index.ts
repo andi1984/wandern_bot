@@ -16,6 +16,7 @@ const bree = new Bree({
     { name: "feed-grabber", cron: "0 22 * * *" },
     { name: "feed-tooter", cron: "0 16 * * *" },
     { name: "natur-boost", interval: "6h" },
+    { name: "saarland-boost", interval: "12h" },
     { name: "alive", interval: "30m" },
   ],
 });

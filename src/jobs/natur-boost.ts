@@ -8,7 +8,6 @@ import { asyncForEach } from "../helper/async";
   const mastoInstance: MastoClient = await login();
   const timelines = mastoInstance.timelines;
   const results = timelines.getTagIterable("natur");
-  // const results = mastoInstance.search({ q: "#natur" });
   //Async iterable
   const result: { value: { id: string }[] } = await results.next();
 
