@@ -4,17 +4,17 @@ import login from "../helper/login";
 (async () => {
   const { parentPort } = require("worker_threads");
   console.log("Starting nature worker");
-  const mastoInstance:MastoClient = await login();
+  const mastoInstance: MastoClient = await login();
   const timelines = mastoInstance.timelines;
   const results = timelines.getTagIterable("natur");
   // const results = mastoInstance.search({ q: "#natur" });
   //Async iterable
-  results.next().then((result: { value: { id: string }[] }) => {
-    // We got our first X entries in result.value
-    // Reblog/Boost all natur posts
-    result.value.forEach((post) => {
-      mastoInstance.statuses.reblog(post.id, { visibility: "public" });
-    });
+  const result: { value: { id: string }[] } = await results.next();
+
+  // We got our first X entries in result.value
+  // Reblog/Boost all natur posts
+  result.value.forEach((post) => {
+    mastoInstance.statuses.reblog(post.id, { visibility: "public" });
   });
 
   // signal to parent that the job is done
