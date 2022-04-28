@@ -1,4 +1,4 @@
-import feeds from "../data/rssfeeds.json";
+import settings from "../data/settings.json";
 
 import getFeed from "../helper/getFeed";
 import createClient from "../helper/db";
@@ -18,7 +18,7 @@ type DB_ITEM = {
 
 // Iterate over all feeds
 (async () => {
-  await asyncForEach(Object.values(feeds), async (feedURL: string) => {
+  await asyncForEach(Object.values(settings.feeds), async (feedURL: string) => {
     const rssData: { items: any[] } = await getFeed(feedURL);
 
     // 1. Hash feedURL to get a unique id for the table

@@ -1,4 +1,7 @@
 {
+  "username": "wandern",
+  "hashtags": ["wandern", "saarWandern", "natur", "nature"],
+  "feeds": {
     "wirschum": "https://wirschum.de/feed/",
     "strauchswanderlust": "https://www.strauchs-wanderlust.info/feed/",
     "lebedraussen": "https://lebedraussen.de/feed/",
@@ -7,4 +10,5 @@
     "erlebniswandern": "https://erlebnis-wandern-saarland.de/feed/",
     "wandernmithans": "http://wandernmithans.de/feed/",
     "hoppraus": "https://hoppraus.de/feed/"
+  }
 }
