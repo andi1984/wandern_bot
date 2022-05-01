@@ -1,6 +1,7 @@
 {
   "username": "wandern",
   "hashtags": ["wandern", "saarWandern", "natur", "nature"],
+  "db_table": "feeds",
   "feeds": {
     "wirschum": "https://wirschum.de/feed/",
     "strauchswanderlust": "https://www.strauchs-wanderlust.info/feed/",

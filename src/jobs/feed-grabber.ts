@@ -34,7 +34,7 @@ type DB_ITEM = {
       async (item: DB_ITEM) => {
         // Check that hash isn't already in the table
         let { data: feeds, error } = await supabase
-          .from("feeds")
+          .from(settings.db_table)
           .select("hash")
           .in("hash", [item.hash]);
 
@@ -44,7 +44,9 @@ type DB_ITEM = {
 
     if (newData.length > 0) {
       console.log(`Inserting ${newData.length} new items`);
-      const { data, error } = await supabase.from("feeds").insert(newData);
+      const { data, error } = await supabase
+        .from(settings.db_table)
+        .insert(newData);
       console.log({ data, error });
 
       return true;
