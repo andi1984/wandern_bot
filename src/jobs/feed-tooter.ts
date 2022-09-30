@@ -3,8 +3,7 @@ import getInstance from "../helper/login";
 import rssFeedItem2Toot, { FeedItem } from "../helper/rssFeedItem2Toot";
 
 import settings from "../data/settings.json";
-
-const { parentPort } = require("worker_threads");
+import { parentPort } from "worker_threads";
 
 (async () => {
   // Connect to DB

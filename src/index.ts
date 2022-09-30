@@ -1,7 +1,9 @@
-require("dotenv").config();
-const path = require("path");
+import dotenv from "dotenv";
+import process from "node:process";
+import * as path from "node:path";
+import Bree from "bree";
 
-const Bree = require("bree");
+dotenv.config();
 
 console.log("starting bree");
 const bree = new Bree({
@@ -20,4 +22,6 @@ const bree = new Bree({
   ],
 });
 
-bree.start();
+(async () => {
+  await bree.start();
+})();

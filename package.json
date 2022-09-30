@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "TS_NODE=true NODE_OPTIONS=\"-r ts-node/register\" nodemon ./src/index.ts",
+    "watch": "TS_NODE=true nodemon ./src/index.ts",
     "build": "tsc",
     "dev": "TS_NODE=true NODE_OPTIONS=\"-r ts-node/register\" node src/index.ts",
     "start": "node ./scripts/create-env.js && node ./dist/index.js"
@@ -17,7 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "@supabase/supabase-js": "^1.33.2",
-    "bree": "^8.0.2",
+    "bree": "^9.0.0",
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.0",
     "masto": "^4.2.7",

@@ -5,8 +5,7 @@ import createClient from "../helper/db";
 
 import sha256 from "crypto-js/sha256";
 import { asyncFilter, asyncForEach } from "../helper/async";
-
-const { parentPort } = require("worker_threads");
+import { parentPort } from "worker_threads";
 
 // Create a single supabase client for interacting with your database
 const supabase = createClient();
